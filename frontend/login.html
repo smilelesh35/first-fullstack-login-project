@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #1e1e2f, #2c3e50);
+            color:white;
+        }
+
+        /* NAVBAR */
+        .navbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 50px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top:0;
+        }
+
+        .logo{
+            font-size:22px;
+            font-weight:bold;
+            color:#00d4ff;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:25px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:white;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            color:#00d4ff;
+        }
+
+        .btn{
+            padding:8px 15px;
+            background:#00d4ff;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            color:black;
+            font-weight:bold;
+        }
+
+        /* LOGIN BOX */
+        .login-wrapper{
+            height:90vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .login-box{
+            width:350px;
+            background: rgba(255,255,255,0.1);
+            padding:30px;
+            border-radius:12px;
+            backdrop-filter: blur(10px);
+            box-shadow:0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .login-box h2{
+            text-align:center;
+            margin-bottom:20px;
+            color:#00d4ff;
+        }
+
+        .login-box input{
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border:none;
+            border-radius:8px;
+            outline:none;
+        }
+
+        .login-box button{
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+            background:#00d4ff;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .login-box button:hover{
+            opacity:0.8;
+        }
+
+        .small-text{
+            text-align:center;
+            margin-top:15px;
+            font-size:14px;
+            opacity:0.7;
+
+        }
+        .register{
+            margin-left: 5px;
+
+        }
+        .register a{
+            color:#fff;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="navbar">
+    <div class="logo">ZaferApp</div>
+    <div class="nav-links">
+        <a href="anasayfa.html">Ana Sayfa</a>
+        <a href="#">Hakkında</a>
+        <a href="#">Servisler</a>
+        <a href="#">İletişim</a>
+    </div>
+    <button class="btn">Kayıt Ol</button>
+</div>
+
+<div class="login-wrapper">
+    <div class="login-box">
+        <form class="signup-form">
+            <h2>Giriş Yap</h2>
+            <input type="text" class="name" placeholder="Kullanıcı Adı">
+            <input type="password" class="password" placeholder="Şifre">
+            <button type="submit">Login</button>
+        </form>
+        <div class="small-text">Hesabın yok mu?<span class="register"><a href="#">Kayıt ol</a></span></div>
+    </div>
+</div>
+</div>
+
+<script>
+    const form = document.querySelector('.signup-form');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.querySelector('.name').value;
+        const password = document.querySelector('.password').value;
+
+try{
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                password: password,
+
+            }),
+
+        })
+        const data = await response.json()
+        if (!response.ok){
+            return alert("kullanıcı adı veya şifre hatalı")
+        }
+
+    window.location.href = "anasayfa.html";
+    localStorage.setItem("token", data.token);
+        alert("Giriş başarılı yönlendiriliyorsunuz...")
+
+
+        }catch(err){
+    console.log(err)
+}
+
+    })
+
+    const register = document.querySelector('.register');
+    register.addEventListener('click', (e) => {
+        e.preventDefault()
+        window.location.href = "signup.html";
+    })
+    const btn = document.querySelector('.btn')
+    btn.addEventListener('click', (e) => {
+        e.preventDefault()
+        window.location.href = "signup.html";
+    })
+
+</script>
+
+</body>
+
+
+
+</html>

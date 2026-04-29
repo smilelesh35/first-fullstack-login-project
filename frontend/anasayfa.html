@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #1e1e2f, #2c3e50);
+            color:white;
+        }
+
+        /* NAVBAR */
+        .navbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 50px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top:0;
+        }
+
+        .logo{
+            font-size:22px;
+            font-weight:bold;
+            color:#00d4ff;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:25px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:white;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            color:#00d4ff;
+        }
+
+        .btn{
+            padding:8px 15px;
+            background:#00d4ff;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            color:black;
+            font-weight:bold;
+        }
+
+        /* HERO */
+        .hero{
+            height:90vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:20px;
+        }
+
+        .hero h1{
+            font-size:50px;
+            margin-bottom:20px;
+        }
+
+        .hero p{
+            max-width:600px;
+            opacity:0.8;
+            margin-bottom:30px;
+        }
+
+        .hero button{
+            padding:12px 25px;
+            background:#00d4ff;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        /* CARDS */
+        .cards{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+            padding:50px;
+        }
+
+        .card{
+            width:250px;
+            background:rgba(255,255,255,0.1);
+            padding:20px;
+            border-radius:12px;
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+            background:rgba(255,255,255,0.2);
+        }
+
+        .card h3{
+            margin-bottom:10px;
+            color:#00d4ff;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">ZaferApp</div>
+    <div class="nav-links">
+        <a href="#">Ana Sayfa</a>
+        <a href="#">Hakkında</a>
+        <a href="#">Servisler</a>
+        <a href="#">İletişim</a>
+    </div>
+    <button class="btn">Giriş Yap</button>
+</div>
+
+<div>Hoşgeldin <span id="name"></span></div>
+<!-- HERO -->
+<section class="hero">
+    <h1>Modern Web Sitesi</h1>
+    <p>Bu site Node.js, PostgreSQL ve frontend temelini geliştirmek için hazırlanmış basit bir ana sayfa örneğidir.</p>
+    <button>Başla</button>
+</section>
+
+<!-- CARDS -->
+<section class="cards">
+    <div class="card">
+        <h3>Hızlı</h3>
+        <p>Modern ve hızlı tasarım yapısı.</p>
+    </div>
+    <div class="card">
+        <h3>Güvenli</h3>
+        <p>Backend ile entegre kullanılabilir.</p>
+    </div>
+    <div class="card">
+        <h3>Responsive</h3>
+        <p>Mobil uyumlu tasarım.</p>
+    </div>
+</section>
+
+</body>
+<script>
+    const btn = document.querySelector('.btn')
+    btn.addEventListener('click', (e)=> {
+
+        window.location.href = "login.html";
+    })
+
+
+    async function  getUserName(){
+    try{
+        const token = localStorage.getItem("token");
+        if (!token) return;
+         const response = await fetch('http://localhost:3000/profile',{
+             method: 'GET',
+             headers: {
+                 'Content-Type' : 'application/json',
+                 'Authorization': 'Bearer ' + token
+             }
+         })
+             const data =  await response.json()
+        console.log("LocalStorage'daki token:", localStorage.getItem("token"));
+        const nameSpan = document.querySelector("#name");
+        if (response.ok && data.user) {
+            nameSpan.textContent = data.user;
+
+        } else {
+            console.log("Kullanıcı bilgisi alınamadı:", data.message);
+        }
+
+
+
+
+    }catch(err){
+        console.log(err)
+    }
+}
+getUserName()
+</script>
+</html>
